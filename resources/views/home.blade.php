@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    {{ \Auth::user()->role->role }}
+                    {{ \Auth::user()->role->id }}
                 </div>
             </div>
         </div>

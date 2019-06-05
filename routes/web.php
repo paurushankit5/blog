@@ -38,6 +38,8 @@ Route::group(['middleware' => ['checkAdmin1'], 'prefix' => 'admin1'], function()
 	});
 });
 
+Route::get('/country', 'HomeController@country');
+
 
 
 
