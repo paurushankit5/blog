@@ -21,3 +21,23 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/myblogs', 'BlogController');
 
+
+Route::group(['middleware' => ['checkSuperUser'], 'prefix' => 'super'], function(){		
+	Route::get('/test', function(){
+		echo "hello";
+	});
+	Route::get('/checkhello', function(){
+		echo "checkhello";
+	});
+});
+
+
+Route::group(['middleware' => ['checkAdmin1'], 'prefix' => 'admin1'], function(){		
+	Route::get('/test', function(){
+		echo "admin1";
+	});
+});
+
+
+
+

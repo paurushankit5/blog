@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddIsSuperuserToUsers extends Migration
+class AddRoleIdToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddIsSuperuserToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_superuser')->default(false);
+            $table->bigInteger('role_id')->unsigned()->nullable()->default(0);
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 
