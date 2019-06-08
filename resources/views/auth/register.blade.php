@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.all')
 
 @section('content')
 <div class="container">
@@ -10,7 +10,16 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
-
+                         <div class="form-group">
+                            <select class="form-control" id="country" name="country_id">
+                                <option value="">Select Country</option>
+                                @if(count($countries))
+                                    @foreach($countries as $country)
+                                        <option value="{{ $country->id }}">{{ $country->country_name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
@@ -87,4 +96,27 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('after_scripts')
+    <script type="text/javascript">
+        $("#country").change(function(){
+            var country_id = $("#country").val();
+            if(country_id !='')
+            {
+                $.ajax({
+                    type: 'POST',
+                    'url'   :   "/getStateByCountryId",
+                    data: {
+                        "country_id"    :   country_id,
+                        "_token"        :   "{{ csrf_token() }}"
+                    },
+                    success:    function(data){
+                        console.log(data);
+
+                    }
+                });
+            }
+        });
+    </script>
 @endsection

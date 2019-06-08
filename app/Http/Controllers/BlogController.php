@@ -15,7 +15,10 @@ class BlogController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $array  =   array('user_id' =>  \Auth::user()->id);
+        $blogs  =   Blog::where($array)->get();
+        $array  =   array('blogs'   =>  $blogs);
+        return view('home', $array);
     }
 
     /**
@@ -52,9 +55,12 @@ class BlogController extends Controller
      * @param  \App\Blog  $blog
      * @return \Illuminate\Http\Response
      */
-    public function show(Blog $blog)
+    public function show($id)
     {
-        //
+        $blog   =   Blog::find($id);
+
+        $array  =   array('blog'    =>  $blog);
+        return view('showOneBlog', $array); 
     }
 
     /**
@@ -63,9 +69,12 @@ class BlogController extends Controller
      * @param  \App\Blog  $blog
      * @return \Illuminate\Http\Response
      */
-    public function edit(Blog $blog)
+    public function edit($id)
     {
-        //
+         $blog   =   Blog::find($id);
+
+        $array  =   array('blog'    =>  $blog);
+        return view('editBlog', $array); 
     }
 
     /**
@@ -75,9 +84,15 @@ class BlogController extends Controller
      * @param  \App\Blog  $blog
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Blog $blog)
+    public function update(Request $request, $id)
     {
-        //
+        $blog   =    Blog::find($id);
+        $blog->title    =   $_REQUEST['title'];
+        $blog->body    =   $request->body;
+        $blog->save();
+        Session::flash('alert-success', 'Blog updated successfully');
+
+        return redirect( route('myblogs.show', $id));
     }
 
     /**
