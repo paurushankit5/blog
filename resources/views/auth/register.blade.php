@@ -10,7 +10,10 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
-                         <div class="form-group">
+                         <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
+
+                            <div class="col-md-6">
                             <select class="form-control" id="country" name="country_id">
                                 <option value="">Select Country</option>
                                 @if(count($countries))
@@ -19,7 +22,19 @@
                                     @endforeach
                                 @endif
                             </select>
+                            </div>
                         </div>
+                        <div class="form-group row stateDiv hide">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('State') }}</label>
+
+                            <div class="col-md-6">
+                            <select class="form-control" id="state_id" name="state_id">
+                                <option value="">Select State</option>
+                                 
+                            </select>
+                            </div>
+                        </div>
+
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
@@ -111,11 +126,26 @@
                         "country_id"    :   country_id,
                         "_token"        :   "{{ csrf_token() }}"
                     },
+                    beforeSend: function(){ $(".stateDiv").addClass("hide");  },
                     success:    function(data){
-                        console.log(data);
+                        $("#state_id").html("");
+                        $(".stateDiv").removeClass("hide");
+
+                        if(data.length)
+                        {
+                            $.each(data, function(index,state){
+                                console.log(state);
+                                $("#state_id").append("<option value='"+state.state_id+"'>"+state.state_name+"</option>");
+
+                            })
+                        }
+
 
                     }
                 });
+            }
+            else{
+                $(".stateDiv").addClass("hide");
             }
         });
     </script>

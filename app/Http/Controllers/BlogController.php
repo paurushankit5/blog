@@ -16,7 +16,7 @@ class BlogController extends Controller
     public function index()
     {
         $array  =   array('user_id' =>  \Auth::user()->id);
-        $blogs  =   Blog::where($array)->get();
+        $blogs  =   Blog::where($array)->paginate(10);
         $array  =   array('blogs'   =>  $blogs);
         return view('home', $array);
     }
@@ -101,8 +101,12 @@ class BlogController extends Controller
      * @param  \App\Blog  $blog
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Blog $blog)
+    public function destroy($id)
     {
-        //
+        $blog   =   Blog::findOrFail($id);
+        $blog->delete();
+        \Session::flash('alert-success', 'Blog deleted successfully');
+
+        return redirect (route('myblogs.index'));
     }
 }

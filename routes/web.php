@@ -60,4 +60,8 @@ Route::get('/country', 'HomeController@country');
 
 Route::get('/signup', 'Auth\RegisterController@signup');
 
+Route::get('/captcha1', function(){
+	return view('captcha');
+});
+
 
